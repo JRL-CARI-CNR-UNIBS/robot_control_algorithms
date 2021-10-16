@@ -4,7 +4,7 @@
 namespace robot_control
 {
 
-bool CentralizedTorqueControl::init(ros::NodeHandle& controller_nh, const rosdyn::ChainPtr &chain)
+bool RobustInverseDynamics::init(ros::NodeHandle& controller_nh, const rosdyn::ChainPtr &chain)
 {
 
   m_controller_nh=controller_nh;
@@ -55,7 +55,7 @@ bool CentralizedTorqueControl::init(ros::NodeHandle& controller_nh, const rosdyn
   return true;
 }
 
-void CentralizedTorqueControl::starting(const Eigen::VectorXd &q, const Eigen::VectorXd &qd)
+void RobustInverseDynamics::starting(const Eigen::VectorXd &q, const Eigen::VectorXd &qd)
 {
   m_configured = false;
 
@@ -64,13 +64,13 @@ void CentralizedTorqueControl::starting(const Eigen::VectorXd &q, const Eigen::V
   m_effort=0*q;
 }
 
-void CentralizedTorqueControl::stopping()
+void RobustInverseDynamics::stopping()
 {
   ROS_INFO("[ %s ] Stopping controller", m_controller_nh.getNamespace().c_str());
   m_configured = false;
 }
 
-void CentralizedTorqueControl::update(const Eigen::VectorXd& q,
+void RobustInverseDynamics::update(const Eigen::VectorXd& q,
                                       const Eigen::VectorXd& qd,
                                       const Eigen::VectorXd &target_q,
                                       const Eigen::VectorXd &target_qd,

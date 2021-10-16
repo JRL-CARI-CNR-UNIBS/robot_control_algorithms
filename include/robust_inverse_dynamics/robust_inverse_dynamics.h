@@ -7,7 +7,7 @@
 namespace robot_control
 {
 
-class CentralizedTorqueControl
+class RobustInverseDynamics
 {
 public:
   bool init(ros::NodeHandle& controller_nh, const rosdyn::ChainPtr& chain);
@@ -46,7 +46,6 @@ protected:
   std::size_t m_nax;
   bool m_configured;
 };
-typedef std::shared_ptr<CentralizedTorqueControl> CentralizedTorqueControlPtr;
+typedef std::shared_ptr<RobustInverseDynamics> RobustInverseDynamicsPtr;
 
 }
-
