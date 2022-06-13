@@ -1,6 +1,5 @@
 #pragma once
 
-# include <eigen_state_space_systems/eigen_controllers.h>
 # include <rosdyn_core/primitives.h>
 # include <ros/ros.h>
 

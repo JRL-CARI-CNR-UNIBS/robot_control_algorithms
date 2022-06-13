@@ -1,6 +1,5 @@
 #include <robust_inverse_dynamics/robust_inverse_dynamics.h>
 
-
 namespace robot_control
 {
 
