@@ -14,6 +14,7 @@ public:
               const Eigen::VectorXd& qd,
               const Eigen::VectorXd& target_q,
               const Eigen::VectorXd& target_qd,
+              const double& dt,
               Eigen::VectorXd& tau_command);
   void starting(const Eigen::VectorXd& q,
                 const Eigen::VectorXd& qd);
