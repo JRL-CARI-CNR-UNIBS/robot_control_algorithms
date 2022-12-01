@@ -43,8 +43,8 @@ protected:
   double m_Kp;
   double m_Kd;
   double m_rho; //  robustness gain
-  double m_Ki; // integral gain
 
+  Eigen::VectorXd m_Ki;// integral gain
 
   ros::NodeHandle m_controller_nh;
   std::size_t m_nax;

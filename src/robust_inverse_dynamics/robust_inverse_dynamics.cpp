@@ -26,10 +26,11 @@ bool RobustInverseDynamics::init(ros::NodeHandle& controller_nh, const rosdyn::C
   m_Kp=wn*wn;
   m_Kd=2.0*xi*wn;
 
-  if (!m_controller_nh.getParam("integral_gain",m_Ki))
+  double Ki;
+  if (!m_controller_nh.getParam("integral_gain",Ki))
   {
     ROS_INFO("Integral gain is not set, use 0");
-    m_Ki=0.0;
+    Ki=0.0;
   }
 
 
@@ -48,6 +49,7 @@ bool RobustInverseDynamics::init(ros::NodeHandle& controller_nh, const rosdyn::C
   m_max_effort.resize(m_nax);
   m_target_effort.resize(m_nax);
   m_xi.resize(m_nax);
+  m_Ki.resize(m_nax);
 
   m_max_effort=m_chain->getTauMax();
   m_max_velocity=m_chain->getDQMax();
@@ -58,6 +60,7 @@ bool RobustInverseDynamics::init(ros::NodeHandle& controller_nh, const rosdyn::C
   m_position.setZero();
   m_effort.setZero();
   m_target_effort.setZero();
+  m_Ki=m_max_effort*Ki;
 
   ROS_INFO("Controller '%s' well initialized",m_controller_nh.getNamespace().c_str());
   ROS_DEBUG("Kp=%f, Kd=%f",m_Kp,m_Kd);
@@ -109,7 +112,7 @@ void RobustInverseDynamics::update(const Eigen::VectorXd& q,
   {
     double sat=std::max(-m_max_effort(iax),std::min(m_effort(iax),m_max_effort(iax)));
     if (sat==m_effort(iax))
-      m_xi+=positon_error*m_Ki*dt;
+      m_xi+=positon_error.cwiseProduct(m_Ki)*dt;
     m_effort(iax)=sat;
   }
   tau_command=m_effort;
