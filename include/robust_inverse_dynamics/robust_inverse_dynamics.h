@@ -29,6 +29,9 @@ protected:
   Eigen::VectorXd m_acceleration;
   Eigen::VectorXd m_effort;
 
+  Eigen::VectorXd m_xi; // integral state
+
+
   Eigen::VectorXd m_target_effort;
   Eigen::VectorXd m_robust_term;
   Eigen::VectorXd m_max_effort;
@@ -40,6 +43,7 @@ protected:
   double m_Kp;
   double m_Kd;
   double m_rho; //  robustness gain
+  double m_Ki; // integral gain
 
 
   ros::NodeHandle m_controller_nh;
