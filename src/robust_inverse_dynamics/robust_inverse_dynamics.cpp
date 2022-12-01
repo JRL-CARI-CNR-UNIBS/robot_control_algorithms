@@ -26,11 +26,16 @@ bool RobustInverseDynamics::init(ros::NodeHandle& controller_nh, const rosdyn::C
   m_Kp=wn*wn;
   m_Kd=2.0*xi*wn;
 
-  double Ki;
+  std::vector<double> Ki;
   if (!m_controller_nh.getParam("integral_gain",Ki))
   {
     ROS_INFO("Integral gain is not set, use 0");
-    Ki=0.0;
+    Ki.resize(m_nax,0.0);
+  }
+  if (Ki.size()!=m_nax)
+  {
+    ROS_INFO("Integral gain is not set, use 0");
+    Ki.resize(m_nax,0.0);
   }
 
 
@@ -60,7 +65,9 @@ bool RobustInverseDynamics::init(ros::NodeHandle& controller_nh, const rosdyn::C
   m_position.setZero();
   m_effort.setZero();
   m_target_effort.setZero();
-  m_Ki=m_max_effort*Ki;
+
+
+  m_Ki=Eigen::Map<Eigen::VectorXd, Eigen::Unaligned>(Ki.data(), Ki.size());
 
   ROS_INFO("Controller '%s' well initialized",m_controller_nh.getNamespace().c_str());
   ROS_DEBUG("Kp=%f, Kd=%f",m_Kp,m_Kd);
@@ -112,7 +119,7 @@ void RobustInverseDynamics::update(const Eigen::VectorXd& q,
   {
     double sat=std::max(-m_max_effort(iax),std::min(m_effort(iax),m_max_effort(iax)));
     if (sat==m_effort(iax))
-      m_xi+=positon_error.cwiseProduct(m_Ki)*dt;
+      m_xi(iax)=positon_error(iax)*m_Ki(iax)*dt;
     m_effort(iax)=sat;
   }
   tau_command=m_effort;
