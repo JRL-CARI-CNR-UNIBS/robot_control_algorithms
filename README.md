@@ -1,5 +1,7 @@
 # robust inverse dynamics control
 
+From: [Continuous State Feedback Guaranteeing Uniform Ultimate Boundedness for Uncertain Dynamic Systems](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1102785&tag=1)
+
 required [rosdyn](https://github.com/CNR-STIIMA-IRAS/rosdyn)
 
 required parameters:
